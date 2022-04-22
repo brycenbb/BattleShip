@@ -1,14 +1,25 @@
 import { boardBuild } from './dom.js';
 let turnTracker = true;
+let gameOver = false;
+let winner = undefined;
 const shipFactory = (number) => {
   let shipLength = number;
   let hitStatus = Array(shipLength).fill('');
 
   const hit = (position) => {
+    // console.log('omg ive been hit at posititon: ', position);
     hitStatus[position] = 'X';
     return isSunk();
   };
-
+  const positionStatus = (position) => {
+    if (hitStatus[position] === 'X') {
+      // console.log('this has already been hit, position: ', position);
+      return true;
+    } else {
+      // console.log('this has not been hit till now, posititon: ', position);
+      return false;
+    }
+  };
   const isSunk = () => {
     if (hitStatus.filter((index) => index === 'X').length === shipLength) {
       return true;
@@ -16,7 +27,7 @@ const shipFactory = (number) => {
     // console.log('ship status:', hitStatus);
     return false;
   };
-  return { hit };
+  return { hit, positionStatus };
 };
 
 const Player = () => {
@@ -31,9 +42,14 @@ const Player = () => {
   };
 
   const nextTurnReal = (x, y, computer) => {
-    computer.getBoard().receiveAttack(x, y);
-    computer.nextTurn(Player());
+    if (computer.validAttack(x, y)) {
+      computer.getBoard().receiveAttack(x, y);
+      computer.nextTurn(Player());
+    } else {
+      console.log('invalid attack location');
+    }
   };
+
   const getBoard = () => {
     return board;
   };
@@ -65,7 +81,18 @@ const Computer = () => {
     return board;
   };
 
-  return { nextTurn, getBoard };
+  const validAttack = (x, y) => {
+    let position = board.boardStatus()[x][y][1];
+    if (
+      board.boardStatus()[x][y] != '' &&
+      board.boardStatus()[x][y][0].positionStatus(position)
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  return { nextTurn, getBoard, validAttack };
 };
 const gameBoard = () => {
   //board is a 10x10 space. Divide by 10 and floor it to get the row, mod by 10 to get the column
@@ -147,7 +174,15 @@ const gameBoard = () => {
         sunkShips++;
         if (sunkShips === ships.length) {
           //Gameover!
-          console.log('End the game, all ships down');
+          gameOver = true;
+          if (!turnTracker) {
+            winner = 'Computer';
+          } else {
+            winner = 'Player';
+          }
+
+          console.log('End the game, all ships down! Winner is: ', winner);
+          //Implement some way to shut down the game
         }
       }
 
@@ -161,7 +196,7 @@ const gameBoard = () => {
 
   const recordAttack = (x, y, result) => {
     if (result === 'hit') {
-      console.log('a hit!');
+      // console.log('a hit!');
       if (turnTracker) {
         document
           .getElementById(String(x) + ' ' + String(y) + ' ' + 'cbox')
@@ -174,7 +209,7 @@ const gameBoard = () => {
         turnTracker = true;
       }
     } else {
-      console.log('a miss!');
+      // console.log('a miss!');
       board[x][y] = 'O';
       if (turnTracker) {
         document

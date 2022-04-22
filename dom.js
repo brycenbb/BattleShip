@@ -28,7 +28,7 @@ export function boardBuild(players) {
 
       if (pBoard[i][j] != '') {
         //this is just to show the ships
-        space.classList.add('hit');
+        space.classList.add('showPlayer');
       }
       row.appendChild(space);
     }
