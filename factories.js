@@ -21,20 +21,32 @@ const Player = () => {
   let board = gameBoard();
 
   const nextTurn = (x, y) => {
-    Computer().board.receiveAttack(x, y);
+    Computer().getBoard().receiveAttack(x, y);
   };
 
-  return { nextTurn };
+  const getBoard = () => board.boardStatus();
+  return { nextTurn, getBoard };
 };
 
 const Computer = () => {
   let board = gameBoard();
+  let boardTracker = Array.from(Array(10), () => new Array(10).fill(false));
 
-  const nextTurn = (x, y) => {
-    Player.board.receiveAttack(x, y);
+  const nextTurn = () => {
+    // Returns a random integer from 0 to 9:
+    let xCord = Math.floor(Math.random() * 10);
+    let yCord = Math.floor(Math.random() * 10);
+    while (boardTracker[xCord][yCord] === true) {
+      xCord = Math.floor(Math.random() * 10);
+      yCord = Math.floor(Math.random() * 10);
+    }
+    boardTracker[xCord][yCord] = true;
+    Player.getBoard().receiveAttack(xCord, yCord);
   };
 
-  return { nextTurn };
+  const getBoard = () => board.boardStatus();
+
+  return { nextTurn, getBoard };
 };
 const gameBoard = () => {
   //board is a 10x10 space. Divide by 10 and floor it to get the row, mod by 10 to get the column
