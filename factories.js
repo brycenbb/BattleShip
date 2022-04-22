@@ -22,33 +22,25 @@ const gameBoard = () => {
   // let board = new Array(10).fill(new Array(10).fill(''));
   let board = Array.from(Array(10), () => new Array(10).fill(''));
   let ships = [];
-  let counter = 0;
 
   const placeShip = (x, y, length, direction) => {
-    // console.log(counter);
-    // counter++;
-    // console.log(board);
-    console.log('validation', validPlacement(x, y, length, direction));
     if (!validPlacement(x, y, length, direction)) {
       //Need to throw an error here in some way, but will return false for now.
       return false;
     }
     ships.push(shipFactory(length));
-    console.log('length:', length);
-    console.log('size:', length, '+', x);
     if (direction === 'X') {
       for (let i = x; i < length + x; i++) {
-        // board[i][y] = ships[ships.length - 1];
-        board[i][y] = 'X';
+        board[i][y] = ships[ships.length - 1];
+        // board[i][y] = 'X';
       }
     } else {
       for (let i = y; i < length + y; i++) {
-        // board[x][i] = ships[ships.length - 1];
-        board[x][i] = 'X';
+        board[x][i] = ships[ships.length - 1];
+        // board[x][i] = 'X';
       }
     }
-    // console.log(board);
-
+    console.log(board);
     return true;
   };
 
