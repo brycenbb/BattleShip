@@ -27,7 +27,7 @@ export function boardBuild(players) {
       space.id = String(i) + ' ' + String(j) + ' ' + 'box';
 
       if (pBoard[i][j] != '') {
-        //this is just to show the ships
+        //this is just to show the ships to the player
         space.classList.add('showPlayer');
       }
       row.appendChild(space);
