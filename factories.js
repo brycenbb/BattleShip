@@ -83,10 +83,13 @@ const Computer = () => {
 
   const validAttack = (x, y) => {
     let position = board.boardStatus()[x][y][1];
-    if (
-      board.boardStatus()[x][y] != '' &&
-      board.boardStatus()[x][y][0].positionStatus(position)
-    ) {
+    if (board.boardStatus()[x][y] != '') {
+      if (typeof board.boardStatus()[x][y][0] === 'object') {
+        if (board.boardStatus()[x][y][0].positionStatus(position)) {
+          return false;
+        }
+        return true;
+      }
       return false;
     }
     return true;
