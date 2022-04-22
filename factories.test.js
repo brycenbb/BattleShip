@@ -16,5 +16,5 @@ test('ship placement works 1', () => {
 test('ship placement works 2', () => {
   let board = factories.gameBoard();
   board.placeShip(2, 2, 3, 'X');
-  expect(board.placeShip(2, 2, 3, 'X')).toBe(true);
+  expect(board.placeShip(2, 2, 3, 'X')).toBe(false);
 });

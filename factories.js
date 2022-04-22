@@ -19,15 +19,17 @@ const shipFactory = (number) => {
 
 const gameBoard = () => {
   //board is a 10x10 space. Divide by 10 and floor it to get the row, mod by 10 to get the column
-  let board = new Array(10).fill(new Array(10).fill(''));
+  // let board = new Array(10).fill(new Array(10).fill(''));
+  let board = Array.from(Array(10), () => new Array(10).fill(''));
   let ships = [];
   let counter = 0;
 
   const placeShip = (x, y, length, direction) => {
     // console.log(counter);
     // counter++;
-    console.log(board);
-    if (!validPlacement()) {
+    // console.log(board);
+    console.log('validation', validPlacement(x, y, length, direction));
+    if (!validPlacement(x, y, length, direction)) {
       //Need to throw an error here in some way, but will return false for now.
       return false;
     }
@@ -45,7 +47,7 @@ const gameBoard = () => {
         board[x][i] = 'X';
       }
     }
-    console.log(board);
+    // console.log(board);
 
     return true;
   };
