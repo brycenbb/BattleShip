@@ -61,7 +61,9 @@ const gameBoard = () => {
   };
 
   const receiveAttack = (x, y) => {
-    if (board[x][y] != '') {
+    // console.log(typeof board[x][y][0]);
+    // console.log(typeof [1, 2]);
+    if (typeof board[x][y] === 'object') {
       let position = board[x][y][1];
       let result = board[x][y][0].hit(position);
       if (result) {
@@ -71,6 +73,7 @@ const gameBoard = () => {
           console.log('End the game');
         }
       }
+
       recordAttack(x, y, 'hit');
       return result;
     } else {
@@ -81,7 +84,6 @@ const gameBoard = () => {
 
   const recordAttack = (x, y, result) => {
     if (result === 'hit') {
-      board[x][y] = 'X';
       //changeColor(hit)
     } else {
       board[x][y] = 'O';
@@ -89,7 +91,10 @@ const gameBoard = () => {
     }
   };
 
-  return { placeShip, receiveAttack };
+  const boardStatus = () => {
+    return board;
+  };
+  return { placeShip, receiveAttack, boardStatus };
 };
 
 module.exports = { shipFactory, gameBoard };

@@ -29,7 +29,6 @@ test('hit detection: hit/sink', () => {
 test('hit detection: miss', () => {
   let board = factories.gameBoard();
   board.placeShip(2, 2, 2, 'X');
-  board.receiveAttack(2, 2);
   expect(board.receiveAttack(3, 3)).toBe(false);
 });
 
@@ -37,4 +36,11 @@ test('hit detection: hit/no sink', () => {
   let board = factories.gameBoard();
   board.placeShip(2, 2, 2, 'X');
   expect(board.receiveAttack(3, 2)).toBe(false);
+});
+
+test('misses are recorded correctly', () => {
+  let board = factories.gameBoard();
+  board.placeShip(2, 2, 2, 'X');
+  board.receiveAttack(5, 5);
+  expect(board.boardStatus()[5][5]).toBe('O');
 });
