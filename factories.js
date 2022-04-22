@@ -19,10 +19,22 @@ const shipFactory = (number) => {
 
 const Player = () => {
   let board = gameBoard();
+
+  const nextTurn = (x, y) => {
+    Computer().board.receiveAttack(x, y);
+  };
+
+  return { nextTurn };
 };
 
 const Computer = () => {
   let board = gameBoard();
+
+  const nextTurn = (x, y) => {
+    Player.board.receiveAttack(x, y);
+  };
+
+  return { nextTurn };
 };
 const gameBoard = () => {
   //board is a 10x10 space. Divide by 10 and floor it to get the row, mod by 10 to get the column
@@ -30,9 +42,11 @@ const gameBoard = () => {
   let board = Array.from(Array(10), () => new Array(10).fill(''));
   let ships = [];
   let sunkShips = 0;
+
   const placeShip = (x, y, length, direction) => {
     if (!validPlacement(x, y, length, direction)) {
       //Need to throw an error here in some way, but will return false for now.
+      console.log('not valid placement');
       return false;
     }
     ships.push(shipFactory(length));
@@ -52,17 +66,43 @@ const gameBoard = () => {
   const validPlacement = (x, y, length, direction) => {
     if (direction === 'X') {
       for (let i = x; i < length + x; i++) {
-        if (board[i][y] != '') {
+        if (
+          board[i][y] != '' ||
+          board[i][y + 1] != '' ||
+          board[i][y - 1] != ''
+        ) {
           return false;
         }
       }
+      if (board[x - 1][y] != '') {
+        return false;
+      }
+      if (x + length + 1 < 10) {
+        if (board[x + length + 1][y] != '') {
+          return false;
+        }
+      }
+
       return true;
     } else {
       for (let i = y; i < length + y; i++) {
-        if (board[x][i] != '') {
+        if (
+          board[x][i] != '' ||
+          board[x + 1][y] != '' ||
+          board[x - 1][i] != ''
+        ) {
           return false;
         }
       }
+      if (board[x][y - 1] != '') {
+        return false;
+      }
+      if (y + length + 1 < 10) {
+        if (board[x][y + length + 1] != '') {
+          return false;
+        }
+      }
+
       return true;
     }
   };

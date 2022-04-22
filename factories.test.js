@@ -44,3 +44,16 @@ test('misses are recorded correctly', () => {
   board.receiveAttack(5, 5);
   expect(board.boardStatus()[5][5]).toBe('O');
 });
+
+test('validation works outside bounds generally', () => {
+  expect(factories.gameBoard().placeShip(1, 11, 3, 'X')).toBe(false);
+});
+test('validation works outside bounds on edge case', () => {
+  expect(factories.gameBoard().placeShip(7, 2, 3, 'X')).toBe(true);
+});
+
+test('ships cannot be placed next to each other', () => {
+  let board = factories.gameBoard();
+  board.placeShip(2, 2, 2, 'X');
+  expect(board.placeShip(2, 1, 3, 'X')).toBe(false);
+});
