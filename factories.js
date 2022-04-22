@@ -20,7 +20,7 @@ const shipFactory = (number) => {
 const Player = () => {
   let board = gameBoard();
   //default adding in ships
-  board.placeShip(2, 2, 3, 'X');
+  board.placeShip(2, 2, 5, 'X');
   board.placeShip(4, 4, 3, 'X');
   board.placeShip(6, 6, 3, 'X');
 
@@ -28,10 +28,14 @@ const Player = () => {
     computer.getBoard().receiveAttack(x, y);
   };
 
+  const nextTurnReal = (x, y, computer) => {
+    computer.getBoard().receiveAttack(x, y);
+    computer.nextTurn(this);
+  };
   const getBoard = () => {
     return board;
   };
-  return { nextTurn, getBoard };
+  return { nextTurn, getBoard, nextTurnReal };
 };
 
 const Computer = () => {
@@ -39,6 +43,7 @@ const Computer = () => {
   //default adding in ships
   board.placeShip(2, 2, 3, 'X');
   board.placeShip(4, 4, 3, 'X');
+  board.placeShip(6, 1, 5, 'Y');
 
   let boardTracker = Array.from(Array(10), () => new Array(10).fill(false));
 
@@ -136,14 +141,13 @@ const gameBoard = () => {
     if (typeof board[x][y] === 'object') {
       let position = board[x][y][1];
       let result = board[x][y][0].hit(position);
-      console.log('ship hit!');
+      // console.log('ship hit!');
       if (result) {
-        console.log(sunkShips);
+        console.log('ship down');
         sunkShips++;
-        console.log(ships.length);
         if (sunkShips === ships.length) {
           //Gameover!
-          console.log('End the game');
+          console.log('End the game, all ships down');
         }
       }
 
@@ -201,6 +205,11 @@ function gameLooptest3() {
 
   // console.log(player.getBoard().boardStatus());
   return true;
+}
+
+function gameLoopReal() {
+  const player = Player();
+  const computer = Computer();
 }
 module.exports = {
   shipFactory,
