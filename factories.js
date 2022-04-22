@@ -31,6 +31,7 @@ const Player = () => {
   };
 
   const nextTurnReal = (x, y, computer) => {
+    console.log('player attacking');
     computer.getBoard().receiveAttack(x, y);
     computer.nextTurn(Player());
   };
@@ -138,8 +139,6 @@ const gameBoard = () => {
   };
 
   const receiveAttack = (x, y) => {
-    // console.log(typeof board[x][y][0]);
-    // console.log(typeof [1, 2]);
     if (typeof board[x][y] === 'object') {
       let position = board[x][y][1];
       let result = board[x][y][0].hit(position);
@@ -163,6 +162,7 @@ const gameBoard = () => {
 
   const recordAttack = (x, y, result) => {
     if (result === 'hit') {
+      console.log('a hit!');
       if (turnTracker) {
         document
           .getElementById(String(x) + ' ' + String(y) + ' ' + 'cbox')
@@ -172,8 +172,10 @@ const gameBoard = () => {
         document
           .getElementById(String(x) + ' ' + String(y) + ' ' + 'box')
           .classList.add('hit');
+        turnTracker = true;
       }
     } else {
+      console.log('a miss!');
       board[x][y] = 'O';
       if (turnTracker) {
         document
@@ -184,6 +186,7 @@ const gameBoard = () => {
         document
           .getElementById(String(x) + ' ' + String(y) + ' ' + 'box')
           .classList.add('miss');
+        turnTracker = true;
       }
     }
   };
