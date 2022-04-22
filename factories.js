@@ -31,7 +31,6 @@ const Player = () => {
   };
 
   const nextTurnReal = (x, y, computer) => {
-    console.log('player attacking');
     computer.getBoard().receiveAttack(x, y);
     computer.nextTurn(Player());
   };
