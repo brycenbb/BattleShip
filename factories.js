@@ -31,16 +31,16 @@ const gameBoard = () => {
     ships.push(shipFactory(length));
     if (direction === 'X') {
       for (let i = x; i < length + x; i++) {
-        board[i][y] = ships[ships.length - 1];
+        board[i][y] = [ships[ships.length - 1], i - x];
         // board[i][y] = 'X';
       }
     } else {
       for (let i = y; i < length + y; i++) {
-        board[x][i] = ships[ships.length - 1];
+        board[x][i] = [ships[ships.length - 1], i - y];
         // board[x][i] = 'X';
       }
     }
-    console.log(board);
+    // console.log(board);
     return true;
   };
 
@@ -62,7 +62,18 @@ const gameBoard = () => {
     }
   };
 
-  return { placeShip };
+  const receiveAttack = (x, y) => {
+    if (board[x][y] != '') {
+      let position = board[x][y][1];
+      return board[x][y][0].hit(position);
+      //changeColor(hit)
+    } else {
+      //changeColor(miss)
+      return false;
+    }
+  };
+
+  return { placeShip, receiveAttack };
 };
 
 module.exports = { shipFactory, gameBoard };

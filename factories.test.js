@@ -13,8 +13,28 @@ test('ship placement works 1', () => {
   expect(factories.gameBoard().placeShip(4, 2, 4, 'X')).toBe(true);
 });
 
-test.only('ship placement works 2', () => {
+test('ship placement works 2', () => {
   let board = factories.gameBoard();
   board.placeShip(2, 2, 3, 'X');
   expect(board.placeShip(2, 2, 3, 'X')).toBe(false);
+});
+
+test('hit detection: hit/sink', () => {
+  let board = factories.gameBoard();
+  board.placeShip(2, 2, 2, 'X');
+  board.receiveAttack(2, 2);
+  expect(board.receiveAttack(3, 2)).toBe(true);
+});
+
+test('hit detection: miss', () => {
+  let board = factories.gameBoard();
+  board.placeShip(2, 2, 2, 'X');
+  board.receiveAttack(2, 2);
+  expect(board.receiveAttack(3, 3)).toBe(false);
+});
+
+test('hit detection: hit/no sink', () => {
+  let board = factories.gameBoard();
+  board.placeShip(2, 2, 2, 'X');
+  expect(board.receiveAttack(3, 2)).toBe(false);
 });
