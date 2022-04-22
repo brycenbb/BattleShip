@@ -57,3 +57,14 @@ test('ships cannot be placed next to each other', () => {
   board.placeShip(2, 2, 2, 'X');
   expect(board.placeShip(2, 1, 3, 'X')).toBe(false);
 });
+
+test('player turn registers', () => {
+  expect(factories.gameLooptest1()).toBe(true);
+});
+test('computer turn registers', () => {
+  expect(factories.gameLooptest2()).toBe(true);
+});
+
+test('computer turn does not allow repeats', () => {
+  expect(factories.gameLooptest3()).toBe(true);
+});

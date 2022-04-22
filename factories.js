@@ -19,20 +19,30 @@ const shipFactory = (number) => {
 
 const Player = () => {
   let board = gameBoard();
+  //default adding in ships
+  board.placeShip(2, 2, 3, 'X');
+  board.placeShip(4, 4, 3, 'X');
+  board.placeShip(6, 6, 3, 'X');
 
-  const nextTurn = (x, y) => {
-    Computer().getBoard().receiveAttack(x, y);
+  const nextTurn = (x, y, computer) => {
+    computer.getBoard().receiveAttack(x, y);
   };
 
-  const getBoard = () => board.boardStatus();
+  const getBoard = () => {
+    return board;
+  };
   return { nextTurn, getBoard };
 };
 
 const Computer = () => {
   let board = gameBoard();
+  //default adding in ships
+  board.placeShip(2, 2, 3, 'X');
+  board.placeShip(4, 4, 3, 'X');
+
   let boardTracker = Array.from(Array(10), () => new Array(10).fill(false));
 
-  const nextTurn = () => {
+  const nextTurn = (player) => {
     // Returns a random integer from 0 to 9:
     let xCord = Math.floor(Math.random() * 10);
     let yCord = Math.floor(Math.random() * 10);
@@ -41,10 +51,12 @@ const Computer = () => {
       yCord = Math.floor(Math.random() * 10);
     }
     boardTracker[xCord][yCord] = true;
-    Player.getBoard().receiveAttack(xCord, yCord);
+    player.getBoard().receiveAttack(xCord, yCord);
   };
 
-  const getBoard = () => board.boardStatus();
+  const getBoard = () => {
+    return board;
+  };
 
   return { nextTurn, getBoard };
 };
@@ -58,7 +70,6 @@ const gameBoard = () => {
   const placeShip = (x, y, length, direction) => {
     if (!validPlacement(x, y, length, direction)) {
       //Need to throw an error here in some way, but will return false for now.
-      console.log('not valid placement');
       return false;
     }
     ships.push(shipFactory(length));
@@ -156,4 +167,42 @@ const gameBoard = () => {
   return { placeShip, receiveAttack, boardStatus };
 };
 
-module.exports = { shipFactory, gameBoard };
+function gameLooptest1() {
+  const player = Player();
+  const computer = Computer();
+  player.nextTurn(2, 2, computer);
+  // computer.nextTurn(player);
+  // console.log(computer.getBoard().boardStatus());
+  return true;
+}
+function gameLooptest2() {
+  const player = Player();
+  const computer = Computer();
+  // player.nextTurn(2, 2, computer);
+  computer.nextTurn(player);
+  // console.log(player.getBoard().boardStatus());
+  return true;
+}
+function gameLooptest3() {
+  const player = Player();
+  const computer = Computer();
+  // player.nextTurn(2, 2, computer);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+  computer.nextTurn(player);
+
+  console.log(player.getBoard().boardStatus());
+  return true;
+}
+module.exports = {
+  shipFactory,
+  gameBoard,
+  gameLooptest1,
+  gameLooptest2,
+  gameLooptest3,
+};
