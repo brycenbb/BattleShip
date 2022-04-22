@@ -17,6 +17,13 @@ const shipFactory = (number) => {
   return { hit };
 };
 
+const Player = () => {
+  let board = gameBoard();
+};
+
+const Computer = () => {
+  let board = gameBoard();
+};
 const gameBoard = () => {
   //board is a 10x10 space. Divide by 10 and floor it to get the row, mod by 10 to get the column
   // let board = new Array(10).fill(new Array(10).fill(''));
