@@ -22,7 +22,7 @@ const gameBoard = () => {
   // let board = new Array(10).fill(new Array(10).fill(''));
   let board = Array.from(Array(10), () => new Array(10).fill(''));
   let ships = [];
-
+  let sunkShips = 0;
   const placeShip = (x, y, length, direction) => {
     if (!validPlacement(x, y, length, direction)) {
       //Need to throw an error here in some way, but will return false for now.
@@ -32,12 +32,10 @@ const gameBoard = () => {
     if (direction === 'X') {
       for (let i = x; i < length + x; i++) {
         board[i][y] = [ships[ships.length - 1], i - x];
-        // board[i][y] = 'X';
       }
     } else {
       for (let i = y; i < length + y; i++) {
         board[x][i] = [ships[ships.length - 1], i - y];
-        // board[x][i] = 'X';
       }
     }
     // console.log(board);
@@ -65,11 +63,29 @@ const gameBoard = () => {
   const receiveAttack = (x, y) => {
     if (board[x][y] != '') {
       let position = board[x][y][1];
-      return board[x][y][0].hit(position);
+      let result = board[x][y][0].hit(position);
+      if (result) {
+        sunkShips++;
+        if (sunkShips === ships.length) {
+          //Gameover!
+          console.log('End the game');
+        }
+      }
+      recordAttack(x, y, 'hit');
+      return result;
+    } else {
+      recordAttack(x, y, 'miss');
+      return false;
+    }
+  };
+
+  const recordAttack = (x, y, result) => {
+    if (result === 'hit') {
+      board[x][y] = 'X';
       //changeColor(hit)
     } else {
+      board[x][y] = 'O';
       //changeColor(miss)
-      return false;
     }
   };
 
