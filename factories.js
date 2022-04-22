@@ -136,8 +136,11 @@ const gameBoard = () => {
     if (typeof board[x][y] === 'object') {
       let position = board[x][y][1];
       let result = board[x][y][0].hit(position);
+      console.log('ship hit!');
       if (result) {
+        console.log(sunkShips);
         sunkShips++;
+        console.log(ships.length);
         if (sunkShips === ships.length) {
           //Gameover!
           console.log('End the game');
@@ -196,7 +199,7 @@ function gameLooptest3() {
   computer.nextTurn(player);
   computer.nextTurn(player);
 
-  console.log(player.getBoard().boardStatus());
+  // console.log(player.getBoard().boardStatus());
   return true;
 }
 module.exports = {

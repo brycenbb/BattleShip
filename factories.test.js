@@ -65,6 +65,6 @@ test('computer turn registers', () => {
   expect(factories.gameLooptest2()).toBe(true);
 });
 
-test('computer turn does not allow repeats', () => {
+test('computer turn does not allow repeats exact positions', () => {
   expect(factories.gameLooptest3()).toBe(true);
 });
