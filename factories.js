@@ -1,3 +1,5 @@
+import { boardBuild } from './dom.js';
+let turnTracker = true;
 const shipFactory = (number) => {
   let shipLength = number;
   let hitStatus = Array(shipLength).fill('');
@@ -19,7 +21,7 @@ const shipFactory = (number) => {
 
 const Player = () => {
   let board = gameBoard();
-  //default adding in ships
+  //default adding in ships for simplicity
   board.placeShip(2, 2, 5, 'X');
   board.placeShip(4, 4, 3, 'X');
   board.placeShip(6, 6, 3, 'X');
@@ -30,7 +32,7 @@ const Player = () => {
 
   const nextTurnReal = (x, y, computer) => {
     computer.getBoard().receiveAttack(x, y);
-    computer.nextTurn(this);
+    computer.nextTurn(Player());
   };
   const getBoard = () => {
     return board;
@@ -161,10 +163,28 @@ const gameBoard = () => {
 
   const recordAttack = (x, y, result) => {
     if (result === 'hit') {
-      //changeColor(hit)
+      if (turnTracker) {
+        document
+          .getElementById(String(x) + ' ' + String(y) + ' ' + 'cbox')
+          .classList.add('hit');
+        turnTracker = false;
+      } else {
+        document
+          .getElementById(String(x) + ' ' + String(y) + ' ' + 'box')
+          .classList.add('hit');
+      }
     } else {
       board[x][y] = 'O';
-      //changeColor(miss)
+      if (turnTracker) {
+        document
+          .getElementById(String(x) + ' ' + String(y) + ' ' + 'cbox')
+          .classList.add('miss');
+        turnTracker = false;
+      } else {
+        document
+          .getElementById(String(x) + ' ' + String(y) + ' ' + 'box')
+          .classList.add('miss');
+      }
     }
   };
 
@@ -207,14 +227,17 @@ function gameLooptest3() {
   return true;
 }
 
-function gameLoopReal() {
+export function gameLoopReal() {
   const player = Player();
   const computer = Computer();
+  boardBuild([player, computer]);
 }
-module.exports = {
-  shipFactory,
-  gameBoard,
-  gameLooptest1,
-  gameLooptest2,
-  gameLooptest3,
-};
+
+// module.exports = {
+//   shipFactory,
+//   gameBoard,
+//   gameLooptest1,
+//   gameLooptest2,
+//   gameLooptest3,
+//   gameLoopReal,
+// };
