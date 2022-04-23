@@ -124,46 +124,50 @@ const gameBoard = () => {
   };
 
   const validPlacement = (x, y, length, direction) => {
-    if (direction === 'X') {
-      for (let i = x; i < length + x; i++) {
-        if (
-          board[i][y] != '' ||
-          board[i][y + 1] != '' ||
-          board[i][y - 1] != ''
-        ) {
+    try {
+      if (direction === 'X') {
+        for (let i = x; i < length + x; i++) {
+          if (
+            board[i][y] != '' ||
+            board[i][y + 1] != '' ||
+            board[i][y - 1] != ''
+          ) {
+            return false;
+          }
+        }
+        if (board[x - 1][y] != '') {
           return false;
         }
-      }
-      if (board[x - 1][y] != '') {
-        return false;
-      }
-      if (x + length + 1 < 10) {
-        if (board[x + length + 1][y] != '') {
-          return false;
+        if (x + length + 1 < 10) {
+          if (board[x + length + 1][y] != '') {
+            return false;
+          }
         }
-      }
 
-      return true;
-    } else {
-      for (let i = y; i < length + y; i++) {
-        if (
-          board[x][i] != '' ||
-          board[x + 1][y] != '' ||
-          board[x - 1][i] != ''
-        ) {
+        return true;
+      } else {
+        for (let i = y; i < length + y; i++) {
+          if (
+            board[x][i] != '' ||
+            board[x + 1][y] != '' ||
+            board[x - 1][i] != ''
+          ) {
+            return false;
+          }
+        }
+        if (board[x][y - 1] != '') {
           return false;
         }
-      }
-      if (board[x][y - 1] != '') {
-        return false;
-      }
-      if (y + length + 1 < 10) {
-        if (board[x][y + length + 1] != '') {
-          return false;
+        if (y + length + 1 < 10) {
+          if (board[x][y + length + 1] != '') {
+            return false;
+          }
         }
-      }
 
-      return true;
+        return true;
+      }
+    } catch (err) {
+      return false;
     }
   };
 

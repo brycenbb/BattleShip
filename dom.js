@@ -28,6 +28,7 @@ export async function gameBuild(player, computer) {
   // shipPlaceComputer();
 }
 function shipPlace(size, player, loopCount) {
+  //mneed to actually put placements on the player boards so ships can be placed.
   let container = document.querySelector('.startModal');
   //make a fake board and let players place somewhere on it:
   for (let i = 0; i < 10; i++) {
@@ -68,23 +69,24 @@ function highlightElement(element, size) {
   let delimitedString = element.id.split(' ');
   let startingLocationX = Number(delimitedString[0]);
   let startingLocationY = Number(delimitedString[1]);
-  element.classList.add('potential');
-  for (let i = 1; i < size; i++) {
-    if (direction === 'X') {
-      if (startingLocationX + i <= 10) {
+  try {
+    // for (let i = 1; i < size; i++) {
+    for (let i = size - 1; i > 0; i--) {
+      if (direction === 'X') {
         let nextBox = document.getElementById(
           String(startingLocationX + i) + ' ' + String(startingLocationY)
         );
         nextBox.classList.add('potential');
-      }
-    } else {
-      if (startingLocationY + i <= 10) {
+      } else {
         let nextBox = document.getElementById(
           String(startingLocationX) + ' ' + String(startingLocationY + i)
         );
         nextBox.classList.add('potential');
       }
     }
+    element.classList.add('potential');
+  } catch (err) {
+    return;
   }
 }
 
