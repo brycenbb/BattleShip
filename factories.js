@@ -44,7 +44,7 @@ const Player = () => {
   const nextTurnReal = (x, y, computer) => {
     if (computer.validAttack(x, y)) {
       computer.getBoard().receiveAttack(x, y);
-      computer.nextTurn(Player());
+      // computer.nextTurn(Player());
     } else {
       console.log('invalid attack location');
     }
@@ -78,6 +78,8 @@ const Computer = () => {
       yCord = Math.floor(Math.random() * 10);
     }
     boardTracker[xCord][yCord] = true;
+    console.log('Computer is attacking this board: ');
+    console.log(player.getBoard().boardStatus());
     player.getBoard().receiveAttack(xCord, yCord);
   };
 
@@ -335,9 +337,6 @@ const gameBoard = () => {
 export function gameLoopReal() {
   console.log('game loop running');
   const player = Player();
-  console.log('player created, starting computer');
   const computer = Computer();
-  console.log('computer created');
   gameBuild(player, computer);
-  // gameBuild(player, computer).then(boardBuild([player, computer]));
 }

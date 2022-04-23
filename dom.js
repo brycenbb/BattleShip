@@ -25,17 +25,9 @@ export function gameBuild(player, computer) {
   console.log('gamebuild running');
   // shipPlaceComputer();
   shipPlace(4, player, 3, computer);
-  // return new Promise(() => {
-  //   shipPlace(4, player, 3);
-  // });
-  // shipPlace(3, player, 2);
-  // shipPlace(2, player, 1);
-  // shipPlace(2, player, 0);
 }
 
 function shipPlace(size, player, loopCount, computer) {
-  //mneed to actually put placements on the player boards so ships can be placed. click event ,takes all boxes that has potential class,
-  //gets their id, places a ship in the players board based on the indexes of the id!
   let container = document.querySelector('.startModal');
   //make a fake board and let players place somewhere on it:
   for (let i = 0; i < 10; i++) {
@@ -144,13 +136,13 @@ function shipPlaceComputer() {
 
 export function boardBuild(players) {
   // console.log('qiwjeiqowje');
-  console.log('board building! Player board:');
+  // console.log('board building! Player board:');
 
   let pBoard = players[0].getBoard().boardStatus();
-  console.log(pBoard);
+  // console.log(pBoard);
   let cBoard = players[1].getBoard().boardStatus();
-  console.log('computer board: ');
-  console.log(cBoard);
+  // console.log('computer board: ');
+  // console.log(cBoard);
   let player = document.querySelector('.playerBoard');
   let computer = document.querySelector('.computerBoard');
 
@@ -172,7 +164,7 @@ export function boardBuild(players) {
     player.appendChild(row);
   }
 
-  //comp second
+  //computer second
   for (let i = 0; i < 10; i++) {
     let row = document.createElement('div');
     row.classList.add('row');
@@ -193,7 +185,22 @@ export function boardBuild(players) {
 }
 
 function events(players, box, x, y) {
+  console.log(
+    'this is one of the last thing that runs in the construction of the page!!!!!!!'
+  );
+  console.log('board building! Player board:');
+
+  let pBoard = players[0].getBoard().boardStatus();
+  console.log(pBoard);
+  let cBoard = players[1].getBoard().boardStatus();
+  console.log('computer board: ');
+  console.log(cBoard);
   box.addEventListener('click', function () {
-    players[0].nextTurnReal(x, y, players[1]);
+    if (players[1].validAttack(x, y)) {
+      players[0].nextTurn(x, y, players[1]);
+      players[1].nextTurn(players[0]);
+    } else {
+      console.log('invalid attack location');
+    }
   });
 }
