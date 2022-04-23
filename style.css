@@ -65,9 +65,11 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   visibility: hidden;
-  width: 300px;
-  height: 200px;
+  width: fit-content;
+  height: fit-content;
   background-color: aqua;
+  display: grid;
+  place-items: center;
 }
 
 .show {
@@ -103,9 +105,14 @@ button {
 .hit {
   background-color: crimson;
 }
+
 .box.showPlayer {
   background-color: brown;
 }
 .box.hit {
   background-color: black;
+}
+
+.potential {
+  background-color: grey;
 }

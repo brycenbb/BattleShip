@@ -1,4 +1,4 @@
-import { boardBuild } from './dom.js';
+import { boardBuild, gameBuild } from './dom.js';
 let turnTracker = true;
 let gameOver = false;
 let winner = undefined;
@@ -270,6 +270,7 @@ function gameLooptest3() {
 export function gameLoopReal() {
   const player = Player();
   const computer = Computer();
+  gameBuild(player, computer);
   boardBuild([player, computer]);
 }
 
