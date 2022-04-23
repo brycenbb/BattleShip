@@ -1,7 +1,7 @@
 let direction = 'X';
 
 export function onload() {
-  // console.log('hi');
+  console.log('onload running');
   window.addEventListener('DOMContentLoaded', function () {
     let modal = document.querySelector('.startModal');
     modal.classList.add('show');
@@ -20,13 +20,15 @@ export function onload() {
   });
 }
 
-export async function gameBuild(player, computer) {
+export function gameBuild(player, computer) {
+  console.log('gamebuild running');
   shipPlace(4, player, 3);
   // shipPlace(3, player, 2);
   // shipPlace(2, player, 1);
   // shipPlace(2, player, 0);
   // shipPlaceComputer();
 }
+
 function shipPlace(size, player, loopCount) {
   //mneed to actually put placements on the player boards so ships can be placed. click event ,takes all boxes that has potential class,
   //gets their id, places a ship in the players board based on the indexes of the id!
@@ -43,18 +45,29 @@ function shipPlace(size, player, loopCount) {
       space.id = String(i) + ' ' + String(j);
       mouseOverEvent(space, size);
       space.addEventListener('click', function () {
-        placementEvent(player);
+        placementEvent(player, size, space);
       });
       row.appendChild(space);
     }
     container.appendChild(row);
   }
 }
-function placementEvent(player) {
+function placementEvent(player, size, element) {
   let elements = document.querySelectorAll('.potential');
-  elements.forEach((element) => {
-    element.classList.add('showPlayer');
-  });
+  let gameBoard = player.getBoard();
+  let delimitedString = element.id.split(' ');
+  let x = Number(delimitedString[0]);
+  let y = Number(delimitedString[1]);
+
+  if (gameBoard.placeShip(x, y, size, direction)) {
+    console.log('placing a ship');
+    console.log(gameBoard.boardStatus());
+
+    elements.forEach((element) => {
+      element.classList.add('showPlayer');
+    });
+  }
+
   // console.log(elements);
 }
 function mouseOverEvent(element, size) {

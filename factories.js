@@ -59,9 +59,12 @@ const Player = () => {
 const Computer = () => {
   let board = gameBoard();
   //default adding in ships
+
   board.placeShip(2, 2, 3, 'X');
   board.placeShip(4, 4, 3, 'X');
-  board.placeShip(6, 1, 5, 'Y');
+  board.placeShip(8, 1, 5, 'Y');
+
+  console.log('added in computer default ships, these are not random');
 
   let boardTracker = Array.from(Array(10), () => new Array(10).fill(false));
 
@@ -97,6 +100,7 @@ const Computer = () => {
 
   return { nextTurn, getBoard, validAttack };
 };
+
 const gameBoard = () => {
   //board is a 10x10 space. Divide by 10 and floor it to get the row, mod by 10 to get the column
   // let board = new Array(10).fill(new Array(10).fill(''));
@@ -106,7 +110,7 @@ const gameBoard = () => {
 
   const placeShip = (x, y, length, direction) => {
     if (!validPlacement(x, y, length, direction)) {
-      //Need to throw an error here in some way, but will return false for now.
+      console.log('not valid');
       return false;
     }
     ships.push(shipFactory(length));
@@ -272,8 +276,12 @@ function gameLooptest3() {
 }
 
 export function gameLoopReal() {
+  console.log('game loop running');
   const player = Player();
+  console.log('player created, starting computer');
   const computer = Computer();
+  console.log('computer created');
+
   gameBuild(player, computer);
   boardBuild([player, computer]);
 }
