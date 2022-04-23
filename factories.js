@@ -193,7 +193,7 @@ const gameBoard = () => {
       y,
       'with size: ',
       length,
-      ',',
+      ', opposite direction of: ',
       direction
     );
     console.log(board);
