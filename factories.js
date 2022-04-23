@@ -60,9 +60,11 @@ const Computer = () => {
   let board = gameBoard();
   //default adding in ships
 
-  board.placeShip(2, 2, 3, 'X');
+  board.placeShip(2, 2, 4, 'X');
   board.placeShip(4, 4, 3, 'X');
-  board.placeShip(8, 1, 5, 'Y');
+  board.placeShip(8, 1, 2, 'Y');
+  board.placeShip(1, 1, 1, 'X');
+
   // console.log(board.boardStatus());
 
   console.log('added in computer default ships, these are not random');
