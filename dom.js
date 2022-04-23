@@ -28,7 +28,8 @@ export async function gameBuild(player, computer) {
   // shipPlaceComputer();
 }
 function shipPlace(size, player, loopCount) {
-  //mneed to actually put placements on the player boards so ships can be placed.
+  //mneed to actually put placements on the player boards so ships can be placed. click event ,takes all boxes that has potential class,
+  //gets their id, places a ship in the players board based on the indexes of the id!
   let container = document.querySelector('.startModal');
   //make a fake board and let players place somewhere on it:
   for (let i = 0; i < 10; i++) {
@@ -41,19 +42,26 @@ function shipPlace(size, player, loopCount) {
       space.id = String(j);
       space.id = String(i) + ' ' + String(j);
       mouseOverEvent(space, size);
+      space.addEventListener('click', function () {
+        placementEvent(player);
+      });
       row.appendChild(space);
     }
     container.appendChild(row);
   }
 }
-
+function placementEvent(player) {
+  let elements = document.querySelectorAll('.potential');
+  elements.forEach((element) => {
+    element.classList.add('showPlayer');
+  });
+  // console.log(elements);
+}
 function mouseOverEvent(element, size) {
   element.addEventListener('mouseenter', function () {
-    // console.log('hi');
     highlightElement(element, size);
   });
   element.addEventListener('mouseleave', function () {
-    // console.log('bye');
     let highlighted = document.querySelectorAll('.potential');
     highlighted.forEach((box) => {
       box.classList.remove('potential');
@@ -64,13 +72,12 @@ function mouseOverEvent(element, size) {
 
 function highlightElement(element, size) {
   //deliminate element location to get coordinates (done)
-  //calculate how many more spaces need to be highlighted based on size and direction
-  //add .potential class to all relevant elements.
+  //calculate how many more spaces need to be highlighted based on size and direction(done)
+  //add .potential class to all relevant elements.(done)
   let delimitedString = element.id.split(' ');
   let startingLocationX = Number(delimitedString[0]);
   let startingLocationY = Number(delimitedString[1]);
   try {
-    // for (let i = 1; i < size; i++) {
     for (let i = size - 1; i > 0; i--) {
       if (direction === 'X') {
         let nextBox = document.getElementById(
