@@ -1,4 +1,5 @@
 let direction = 'X';
+let loops = 4;
 
 export function onload() {
   console.log('onload running');
@@ -43,6 +44,10 @@ function shipPlace(size, player, loopCount) {
       space.classList.add('box');
       space.id = String(j);
       space.id = String(i) + ' ' + String(j);
+      if (player.getBoard().boardStatus()[i][j] != '') {
+        //this is just to show the ships to the player
+        space.classList.add('showPlayer');
+      }
       mouseOverEvent(space, size);
       space.addEventListener('click', function () {
         placementEvent(player, size, space);
@@ -63,8 +68,8 @@ function placementEvent(player, size, element) {
     oppDir = 'Y';
   }
 
-  console.log('start of placementEvent: ');
-  console.log(gameBoard.boardStatus());
+  // console.log('start of placementEvent: ');
+  // console.log(gameBoard.boardStatus());
   if (gameBoard.placeShip(x, y, size, direction)) {
     console.log('ship placed: ');
     console.log(gameBoard.boardStatus());
@@ -72,6 +77,12 @@ function placementEvent(player, size, element) {
     elements.forEach((element) => {
       element.classList.add('showPlayer');
     });
+
+    //maybe remove click event here? or go to the next shipplace call? maybe need to refactor how the board is made?
+
+    //this doesnt work at all lol
+    // element.removeEventListener('click', function () {});
+    // shipPlace(3, player, 2);
   }
 
   // console.log(elements);
