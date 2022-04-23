@@ -70,8 +70,9 @@ function placementEvent(player, size, element) {
 
   // console.log('start of placementEvent: ');
   // console.log(gameBoard.boardStatus());
-  if (gameBoard.placeShip(x, y, size, direction)) {
+  if (gameBoard.placeShip(x, y, loops, direction)) {
     console.log('ship placed: ');
+    loops--;
     console.log(gameBoard.boardStatus());
 
     elements.forEach((element) => {
@@ -108,7 +109,7 @@ function highlightElement(element, size) {
   let startingLocationX = Number(delimitedString[0]);
   let startingLocationY = Number(delimitedString[1]);
   try {
-    for (let i = size - 1; i > 0; i--) {
+    for (let i = loops - 1; i > 0; i--) {
       if (direction === 'X') {
         let nextBox = document.getElementById(
           String(startingLocationX + i) + ' ' + String(startingLocationY)
