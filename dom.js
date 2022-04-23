@@ -58,9 +58,13 @@ function placementEvent(player, size, element) {
   let delimitedString = element.id.split(' ');
   let x = Number(delimitedString[0]);
   let y = Number(delimitedString[1]);
+  let oppDir = 'X';
+  if (direction === 'X') {
+    oppDir = 'Y';
+  }
 
-  if (gameBoard.placeShip(x, y, size, direction)) {
-    console.log('placing a ship');
+  if (gameBoard.placeShip(x, y, size, oppDir)) {
+    console.log('ship placed');
     console.log(gameBoard.boardStatus());
 
     elements.forEach((element) => {
