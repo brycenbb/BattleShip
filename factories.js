@@ -338,7 +338,6 @@ export function gameLoopReal() {
   console.log('player created, starting computer');
   const computer = Computer();
   console.log('computer created');
-
   gameBuild(player, computer);
-  boardBuild([player, computer]);
+  // gameBuild(player, computer).then(boardBuild([player, computer]));
 }

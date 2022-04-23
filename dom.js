@@ -23,14 +23,17 @@ export function onload() {
 
 export function gameBuild(player, computer) {
   console.log('gamebuild running');
-  shipPlace(4, player, 3);
+  // shipPlaceComputer();
+  shipPlace(4, player, 3, computer);
+  // return new Promise(() => {
+  //   shipPlace(4, player, 3);
+  // });
   // shipPlace(3, player, 2);
   // shipPlace(2, player, 1);
   // shipPlace(2, player, 0);
-  // shipPlaceComputer();
 }
 
-function shipPlace(size, player, loopCount) {
+function shipPlace(size, player, loopCount, computer) {
   //mneed to actually put placements on the player boards so ships can be placed. click event ,takes all boxes that has potential class,
   //gets their id, places a ship in the players board based on the indexes of the id!
   let container = document.querySelector('.startModal');
@@ -50,14 +53,14 @@ function shipPlace(size, player, loopCount) {
       }
       mouseOverEvent(space, size);
       space.addEventListener('click', function () {
-        placementEvent(player, size, space);
+        placementEvent(player, size, space, computer);
       });
       row.appendChild(space);
     }
     container.appendChild(row);
   }
 }
-function placementEvent(player, size, element) {
+function placementEvent(player, size, element, computer) {
   let elements = document.querySelectorAll('.potential');
   let gameBoard = player.getBoard();
   let delimitedString = element.id.split(' ');
@@ -73,6 +76,13 @@ function placementEvent(player, size, element) {
   if (gameBoard.placeShip(x, y, loops, direction)) {
     console.log('ship placed: ');
     loops--;
+    console.log('loops', loops);
+    if (loops === 0) {
+      let modal = document.querySelector('.startModal');
+      modal.classList.remove('show');
+      boardBuild([player, computer]);
+      return;
+    }
     console.log(gameBoard.boardStatus());
 
     elements.forEach((element) => {
@@ -134,8 +144,13 @@ function shipPlaceComputer() {
 
 export function boardBuild(players) {
   // console.log('qiwjeiqowje');
+  console.log('board building! Player board:');
+
   let pBoard = players[0].getBoard().boardStatus();
+  console.log(pBoard);
   let cBoard = players[1].getBoard().boardStatus();
+  console.log('computer board: ');
+  console.log(cBoard);
   let player = document.querySelector('.playerBoard');
   let computer = document.querySelector('.computerBoard');
 
