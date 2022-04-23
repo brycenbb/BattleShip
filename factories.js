@@ -33,9 +33,9 @@ const shipFactory = (number) => {
 const Player = () => {
   let board = gameBoard();
   //default adding in ships for simplicity
-  board.placeShip(2, 2, 5, 'X');
-  board.placeShip(4, 4, 3, 'X');
-  board.placeShip(6, 6, 3, 'X');
+  // board.placeShip(2, 2, 5, 'X');
+  // board.placeShip(4, 4, 3, 'X');
+  // board.placeShip(6, 6, 3, 'X');
 
   const nextTurn = (x, y, computer) => {
     computer.getBoard().receiveAttack(x, y);
@@ -123,61 +123,97 @@ const gameBoard = () => {
         board[x][i] = [ships[ships.length - 1], i - y];
       }
     }
-    // console.log(board);
+    console.log(board);
     return true;
   };
 
   //I believe this needs to be rewritten...
+  // const validPlacement = (x, y, length, direction) => {
+  //   try {
+  //     console.log(
+  //       'trying to place ship at: ',
+  //       x,
+  //       y,
+  //       'with size: ',
+  //       length,
+  //       ',',
+  //       direction
+  //     );
+  //     if (direction === 'X') {
+  //       for (let i = x; i < length + x; i++) {
+  //         if (
+  //           board[i][y] != '' ||
+  //           board[i][y + 1] != '' ||
+  //           board[i][y - 1] != ''
+  //         ) {
+  //           return false;
+  //         }
+  //       }
+  //       if (board[x - 1][y] != '') {
+  //         return false;
+  //       }
+  //       if (x + length + 1 < 10) {
+  //         if (board[x + length + 1][y] != '') {
+  //           return false;
+  //         }
+  //       }
+
+  //       return true;
+  //     } else {
+  //       for (let i = y; i < length + y; i++) {
+  //         if (
+  //           board[x][i] != '' ||
+  //           board[x + 1][y] != '' ||
+  //           board[x - 1][i] != ''
+  //         ) {
+  //           return false;
+  //         }
+  //       }
+  //       if (board[x][y - 1] != '') {
+  //         return false;
+  //       }
+  //       if (y + length + 1 < 10) {
+  //         if (board[x][y + length + 1] != '') {
+  //           return false;
+  //         }
+  //       }
+
+  //       return true;
+  //     }
+  //   } catch (err) {
+  //     console.log('valid placement threw error');
+  //     return false;
+  //   }
+  // };
+
   const validPlacement = (x, y, length, direction) => {
+    console.log(
+      'trying to place ship at: ',
+      x,
+      y,
+      'with size: ',
+      length,
+      ',',
+      direction
+    );
+    console.log(board);
     try {
-      console.log(
-        'trying to place ship at: ',
-        x,
-        y,
-        'with size: ',
-        length,
-        ',',
-        direction
-      );
       if (direction === 'X') {
         for (let i = x; i < length + x; i++) {
-          if (
-            board[i][y] != '' ||
-            board[i][y + 1] != '' ||
-            board[i][y - 1] != ''
-          ) {
+          if (board[i][y] != '') {
+            console.log('failed placement x, location:', i, ', ', y);
             return false;
           }
         }
-        if (board[x - 1][y] != '') {
-          return false;
-        }
-        if (x + length + 1 < 10) {
-          if (board[x + length + 1][y] != '') {
-            return false;
-          }
-        }
-
         return true;
       } else {
         for (let i = y; i < length + y; i++) {
-          if (
-            board[x][i] != '' ||
-            board[x + 1][y] != '' ||
-            board[x - 1][i] != ''
-          ) {
-            return false;
-          }
-        }
-        if (board[x][y - 1] != '') {
-          return false;
-        }
-        if (y + length + 1 < 10) {
-          if (board[x][y + length + 1] != '') {
-            return false;
-          }
-        }
+          if (board[x][i] != '') {
+            console.log('failed placement y');
 
+            return false;
+          }
+        }
         return true;
       }
     } catch (err) {
