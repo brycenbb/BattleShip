@@ -12,13 +12,19 @@
     <div class="startModal"></div>
     <div class="header">
       <h2>BattleShip</h2>
-      <button type="button">New Game</button>
+      <button type="button" id="new" disabled>New Game</button>
     </div>
     <div id="messages"></div>
 
     <div class="container">
-      <div class="playerBoard"></div>
-      <div class="computerBoard"></div>
+      <div id="playerContainer">
+        <div class="playerBoard"></div>
+        <div id="player"></div>
+      </div>
+      <div id="computerContainer">
+        <div class="computerBoard"></div>
+        <div id="computer"></div>
+      </div>
     </div>
   </body>
 </html>

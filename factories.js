@@ -1,7 +1,8 @@
-import { boardBuild, gameBuild } from './dom.js';
+import { boardBuild, gameBuild, updateTextHit } from './dom.js';
 let turnTracker = true;
 let gameOver = false;
 let winner = undefined;
+let initial = true;
 const shipFactory = (number) => {
   let shipLength = number;
   let hitStatus = Array(shipLength).fill('');
@@ -37,13 +38,21 @@ const Player = () => {
   // board.placeShip(4, 4, 3, 'X');
   // board.placeShip(6, 6, 3, 'X');
 
+  const updateTextPlayer = (result) => {
+    if (result) {
+      document.getElementById('messages').textContent = "You've hit a ship!";
+    } else {
+      document.getElementById('messages').textContent = "You've missed!";
+    }
+  };
+
   const nextTurn = (x, y, computer) => {
-    computer.getBoard().receiveAttack(x, y);
+    computer.getBoard().receiveAttack(x, y, true);
   };
 
   const nextTurnReal = (x, y, computer) => {
     if (computer.validAttack(x, y)) {
-      computer.getBoard().receiveAttack(x, y);
+      computer.getBoard().receiveAttack(x, y, false);
       // computer.nextTurn(Player());
     } else {
       console.log('invalid attack location');
@@ -69,7 +78,7 @@ const Computer = () => {
   // console.log('added in computer default ships, these are not random');
 
   let boardTracker = Array.from(Array(10), () => new Array(10).fill(false));
-
+  const updateTextComp = () => {};
   const nextTurn = (player) => {
     // Returns a random integer from 0 to 9:
     let xCord = Math.floor(Math.random() * 10);
@@ -81,7 +90,7 @@ const Computer = () => {
     boardTracker[xCord][yCord] = true;
     // console.log('Computer is attacking this board: ');
     // console.log(player.getBoard().boardStatus());
-    player.getBoard().receiveAttack(xCord, yCord);
+    player.getBoard().receiveAttack(xCord, yCord, false);
   };
 
   const getBoard = () => {
@@ -225,12 +234,16 @@ const gameBoard = () => {
     }
   };
 
-  const receiveAttack = (x, y) => {
+  const receiveAttack = (x, y, boolean) => {
+    if (winner != undefined) {
+      return;
+    }
     if (typeof board[x][y] === 'object') {
       let position = board[x][y][1];
       let result = board[x][y][0].hit(position);
       // console.log('ship hit!');
       if (result) {
+        updateTextHit(boolean, true);
         console.log('ship down');
         sunkShips++;
         if (sunkShips === ships.length) {
@@ -238,18 +251,33 @@ const gameBoard = () => {
           gameOver = true;
           if (!turnTracker) {
             winner = 'Computer';
+            document.getElementById('messages').innerHTML =
+              'Game over! The winner is: ' + winner;
+            return;
           } else {
             winner = 'Player';
+            document.getElementById('messages').innerHTML =
+              'Game over! The winner is: ' + winner;
+            return;
           }
 
           console.log('End the game, all ships down! Winner is: ', winner);
           //Implement some way to shut down the game
         }
+      } else {
+        updateTextHit(boolean, false);
       }
 
       recordAttack(x, y, 'hit');
       return result;
     } else {
+      if (boolean) {
+        document.getElementById('messages').innerHTML =
+          "You've missed!" + '<br />';
+      } else {
+        document.getElementById('messages').innerHTML +=
+          'The enemy has missed!';
+      }
       recordAttack(x, y, 'miss');
       return false;
     }
@@ -340,4 +368,10 @@ export function gameLoopReal() {
   const player = Player();
   const computer = Computer();
   gameBuild(player, computer);
+  if (initial) {
+    document.getElementById('new').addEventListener('click', function () {
+      gameLoopReal();
+    });
+    initial = false;
+  }
 }

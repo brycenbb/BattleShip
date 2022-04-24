@@ -1,8 +1,14 @@
+// import { gameLoopReal } from './factories';
+
 let direction = 'X';
 let loops = 4;
+let initial = true;
 
 export function onload() {
   // console.log('onload running');
+  loops = 4;
+  updateTextShip(loops);
+
   window.addEventListener('DOMContentLoaded', function () {
     let modal = document.querySelector('.startModal');
     modal.classList.add('show');
@@ -18,6 +24,17 @@ export function onload() {
       }
     });
     modal.appendChild(dirBtn);
+  });
+  // gameLoopReal();
+  if (initial) {
+    newGame();
+    initial = false;
+  }
+}
+
+function newGame() {
+  document.getElementById('new').addEventListener('click', function () {
+    onload();
   });
 }
 
@@ -53,6 +70,39 @@ function shipPlace(size, player, loopCount, computer) {
     container.appendChild(row);
   }
 }
+
+function updateTextShip(counter) {
+  document.getElementById('messages').textContent =
+    'Place your ship of length ' + String(counter);
+}
+export function updateTextHit(boolean, sunk) {
+  if (sunk) {
+    if (boolean) {
+      console.log('ship sunk, changing text');
+
+      document.getElementById('messages').innerHTML =
+        "You've sunk a ship!!!" + '<br />';
+    } else {
+      document.getElementById('messages').innerHTML +=
+        'The enemy has sunk a ship!!!';
+      console.log('text should be changed');
+    }
+  } else {
+    if (boolean) {
+      document.getElementById('messages').innerHTML =
+        "You've hit a ship!" + '<br />';
+    } else {
+      document.getElementById('messages').innerHTML +=
+        'The enemy has hit a ship!';
+    }
+  }
+}
+function updateTextPlay() {
+  document.getElementById('messages').textContent = 'Choose an area to attack!';
+  document.getElementById('messages').style.paddingTop = '1.6rem';
+  document.querySelector('#player').textContent = 'Player';
+  document.querySelector('#computer').textContent = 'Opponent';
+}
 function placementEvent(player, size, element, computer) {
   let elements = document.querySelectorAll('.potential');
   let gameBoard = player.getBoard();
@@ -60,6 +110,7 @@ function placementEvent(player, size, element, computer) {
   let x = Number(delimitedString[0]);
   let y = Number(delimitedString[1]);
   let oppDir = 'X';
+
   if (direction === 'X') {
     oppDir = 'Y';
   }
@@ -68,14 +119,16 @@ function placementEvent(player, size, element, computer) {
   // console.log(gameBoard.boardStatus());
   if (gameBoard.placeShip(x, y, loops, direction)) {
     //TODO:write a function that takes in loops and displays a msg to the modal based on the loops count (ie: place your Xth ship!)
-
     // console.log('ship placed: ');
     loops--;
+    updateTextShip(loops);
+
     // console.log('loops', loops);
     if (loops === 0) {
       let modal = document.querySelector('.startModal');
       modal.classList.remove('show');
       boardBuild([player, computer]);
+      updateTextPlay();
       return;
     }
     // console.log(gameBoard.boardStatus());
