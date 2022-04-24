@@ -6,7 +6,7 @@ export function onload() {
   window.addEventListener('DOMContentLoaded', function () {
     let modal = document.querySelector('.startModal');
     modal.classList.add('show');
-    modal.style.padding = '100px 200px';
+    modal.style.padding = '50px 100px';
     let dirBtn = document.createElement('button');
     dirBtn.type = 'button';
     dirBtn.textContent = 'Change Direction';
@@ -67,6 +67,8 @@ function placementEvent(player, size, element, computer) {
   // console.log('start of placementEvent: ');
   // console.log(gameBoard.boardStatus());
   if (gameBoard.placeShip(x, y, loops, direction)) {
+    //TODO:write a function that takes in loops and displays a msg to the modal based on the loops count (ie: place your Xth ship!)
+
     // console.log('ship placed: ');
     loops--;
     // console.log('loops', loops);
