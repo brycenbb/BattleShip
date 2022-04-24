@@ -139,7 +139,19 @@ function shipPlaceComputer(computer) {
   let yCord = Math.floor(Math.random() * 10);
   let directions = ['X', 'Y'];
   let randIndex = Math.floor(Math.random() * 2);
-  compGameboard.placeShip(xCord, yCord, 4, directions[randIndex]);
+  // compGameboard.placeShip(xCord, yCord, 4, directions[randIndex]);
+
+  while (successfullyPlaced === false) {
+    xCord = Math.floor(Math.random() * 10);
+    yCord = Math.floor(Math.random() * 10);
+    randIndex = Math.floor(Math.random() * 2);
+
+    if (compGameboard.placeShip(xCord, yCord, 4, directions[randIndex])) {
+      successfullyPlaced = true;
+    }
+  }
+  successfullyPlaced = false;
+
   while (successfullyPlaced === false) {
     xCord = Math.floor(Math.random() * 10);
     yCord = Math.floor(Math.random() * 10);
@@ -211,7 +223,7 @@ export function boardBuild(players) {
 
       if (cBoard[i][j] != '') {
         // this class add is just to show the ships
-        // space.classList.add('hit');
+        space.classList.add('hit');
       }
       row.appendChild(space);
     }
