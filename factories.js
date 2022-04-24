@@ -58,16 +58,15 @@ const Player = () => {
 
 const Computer = () => {
   let board = gameBoard();
+
   //default adding in ships
 
-  board.placeShip(2, 2, 4, 'X');
-  board.placeShip(4, 4, 3, 'X');
-  board.placeShip(8, 1, 2, 'Y');
-  board.placeShip(1, 1, 1, 'X');
+  // board.placeShip(2, 2, 4, 'X');
+  // board.placeShip(4, 4, 3, 'X');
+  // board.placeShip(8, 1, 2, 'Y');
+  // board.placeShip(1, 1, 1, 'X');
 
-  // console.log(board.boardStatus());
-
-  console.log('added in computer default ships, these are not random');
+  // console.log('added in computer default ships, these are not random');
 
   let boardTracker = Array.from(Array(10), () => new Array(10).fill(false));
 
@@ -80,8 +79,8 @@ const Computer = () => {
       yCord = Math.floor(Math.random() * 10);
     }
     boardTracker[xCord][yCord] = true;
-    console.log('Computer is attacking this board: ');
-    console.log(player.getBoard().boardStatus());
+    // console.log('Computer is attacking this board: ');
+    // console.log(player.getBoard().boardStatus());
     player.getBoard().receiveAttack(xCord, yCord);
   };
 
@@ -127,7 +126,7 @@ const gameBoard = () => {
         board[x][i] = [ships[ships.length - 1], i - y];
       }
     }
-    console.log(board);
+    // console.log(board);
     return true;
   };
 
@@ -191,21 +190,21 @@ const gameBoard = () => {
   // };
 
   const validPlacement = (x, y, length, direction) => {
-    console.log(
-      'trying to place ship at: ',
-      x,
-      y,
-      'with size: ',
-      length,
-      ', opposite direction of: ',
-      direction
-    );
-    console.log(board);
+    // console.log(
+    //   'trying to place ship at: ',
+    //   x,
+    //   y,
+    //   'with size: ',
+    //   length,
+    //   ', opposite direction of: ',
+    //   direction
+    // );
+    // console.log(board);
     try {
       if (direction === 'X') {
         for (let i = x; i < length + x; i++) {
           if (board[i][y] != '') {
-            console.log('failed placement x, location:', i, ', ', y);
+            // console.log('failed placement x, location:', i, ', ', y);
             return false;
           }
         }
@@ -213,7 +212,7 @@ const gameBoard = () => {
       } else {
         for (let i = y; i < length + y; i++) {
           if (board[x][i] != '') {
-            console.log('failed placement y');
+            // console.log('failed placement y');
 
             return false;
           }
@@ -221,7 +220,7 @@ const gameBoard = () => {
         return true;
       }
     } catch (err) {
-      console.log('valid placement threw error');
+      // console.log('valid placement threw error');
       return false;
     }
   };
@@ -337,7 +336,7 @@ const gameBoard = () => {
 // };
 
 export function gameLoopReal() {
-  console.log('game loop running');
+  // console.log('game loop running');
   const player = Player();
   const computer = Computer();
   gameBuild(player, computer);

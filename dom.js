@@ -2,7 +2,7 @@ let direction = 'X';
 let loops = 4;
 
 export function onload() {
-  console.log('onload running');
+  // console.log('onload running');
   window.addEventListener('DOMContentLoaded', function () {
     let modal = document.querySelector('.startModal');
     modal.classList.add('show');
@@ -22,9 +22,10 @@ export function onload() {
 }
 
 export function gameBuild(player, computer) {
-  console.log('gamebuild running');
+  // console.log('gamebuild running');
   // shipPlaceComputer();
   shipPlace(4, player, 3, computer);
+  shipPlaceComputer(computer);
 }
 
 function shipPlace(size, player, loopCount, computer) {
@@ -66,16 +67,16 @@ function placementEvent(player, size, element, computer) {
   // console.log('start of placementEvent: ');
   // console.log(gameBoard.boardStatus());
   if (gameBoard.placeShip(x, y, loops, direction)) {
-    console.log('ship placed: ');
+    // console.log('ship placed: ');
     loops--;
-    console.log('loops', loops);
+    // console.log('loops', loops);
     if (loops === 0) {
       let modal = document.querySelector('.startModal');
       modal.classList.remove('show');
       boardBuild([player, computer]);
       return;
     }
-    console.log(gameBoard.boardStatus());
+    // console.log(gameBoard.boardStatus());
 
     elements.forEach((element) => {
       element.classList.add('showPlayer');
@@ -130,8 +131,42 @@ function highlightElement(element, size) {
   }
 }
 
-function shipPlaceComputer() {
+function shipPlaceComputer(computer) {
   //need to place  4,3,2,2 length ships randomly
+  let compGameboard = computer.getBoard();
+  let successfullyPlaced = false;
+  let xCord = Math.floor(Math.random() * 10);
+  let yCord = Math.floor(Math.random() * 10);
+  let directions = ['X', 'Y'];
+  let randIndex = Math.floor(Math.random() * 2);
+  compGameboard.placeShip(xCord, yCord, 4, directions[randIndex]);
+  while (successfullyPlaced === false) {
+    xCord = Math.floor(Math.random() * 10);
+    yCord = Math.floor(Math.random() * 10);
+    randIndex = Math.floor(Math.random() * 2);
+
+    if (compGameboard.placeShip(xCord, yCord, 3, directions[randIndex])) {
+      successfullyPlaced = true;
+    }
+  }
+  successfullyPlaced = false;
+  while (successfullyPlaced === false) {
+    xCord = Math.floor(Math.random() * 10);
+    yCord = Math.floor(Math.random() * 10);
+    randIndex = Math.floor(Math.random() * 2);
+    if (compGameboard.placeShip(xCord, yCord, 2, directions[randIndex])) {
+      successfullyPlaced = true;
+    }
+  }
+  successfullyPlaced = false;
+  while (successfullyPlaced === false) {
+    xCord = Math.floor(Math.random() * 10);
+    yCord = Math.floor(Math.random() * 10);
+    randIndex = Math.floor(Math.random() * 2);
+    if (compGameboard.placeShip(xCord, yCord, 1, directions[randIndex])) {
+      return;
+    }
+  }
 }
 
 export function boardBuild(players) {
@@ -175,7 +210,7 @@ export function boardBuild(players) {
       events(players, space, i, j);
 
       if (cBoard[i][j] != '') {
-        //this class add is just to show the ships
+        // this class add is just to show the ships
         // space.classList.add('hit');
       }
       row.appendChild(space);
@@ -185,16 +220,16 @@ export function boardBuild(players) {
 }
 
 function events(players, box, x, y) {
-  console.log(
-    'this is one of the last thing that runs in the construction of the page!!!!!!!'
-  );
-  console.log('board building! Player board:');
+  // console.log(
+  //   'this is one of the last thing that runs in the construction of the page!!!!!!!'
+  // );
+  // console.log('board building! Player board:');
 
   let pBoard = players[0].getBoard().boardStatus();
-  console.log(pBoard);
+  // console.log(pBoard);
   let cBoard = players[1].getBoard().boardStatus();
-  console.log('computer board: ');
-  console.log(cBoard);
+  // console.log('computer board: ');
+  // console.log(cBoard);
   box.addEventListener('click', function () {
     if (players[1].validAttack(x, y)) {
       players[0].nextTurn(x, y, players[1]);
