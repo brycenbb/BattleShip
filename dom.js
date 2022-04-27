@@ -278,7 +278,7 @@ export function boardBuild(players) {
 
       if (cBoard[i][j] != '') {
         // this class add is just to show the ships
-        space.classList.add('hit');
+        // space.classList.add('hit');
       }
       row.appendChild(space);
     }
